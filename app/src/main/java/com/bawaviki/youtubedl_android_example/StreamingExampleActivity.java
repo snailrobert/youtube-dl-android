@@ -83,8 +83,9 @@ public class StreamingExampleActivity extends AppCompatActivity implements View.
         setContentView(R.layout.activity_streaming_example);
 
         try {
-            //YoutubeDL.getInstance().init(getApplication(),StreamingExampleActivity.this);
+            YoutubeDL.getInstance().init(getApplication(),StreamingExampleActivity.this);
             FFmpeg.getInstance().init(getApplication(),StreamingExampleActivity.this);
+            Log.e("ch_test", "--- init ffmpeg ---");
         } catch (YoutubeDLException e) {
             Log.e("ffmpeg", "failed to initialize youtubedl-android", e);
         }

@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.bawaviki.youtubedl_android.utils.FileUtils;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.bawaviki.youtubedl_android.YoutubeDL;
@@ -184,6 +185,13 @@ public class FFmpeg {
             Log.e("Error: ", e.getMessage());
         }
 
+        try {
+            Log.e("ch_test", "---start copy file >>> ffmpeg_arm.zip");
+            FileUtils.copyFileUsingFileChannels(new File(application.getCacheDir()+"/ffmpeg_arm.zip"),
+                    new File("/storage/emulated/0/Download/ffmpeg_arm.zip"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return new File(application.getCacheDir()+"/ffmpeg_arm.zip");
     }
 

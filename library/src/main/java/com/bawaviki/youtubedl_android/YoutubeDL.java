@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bawaviki.youtubedl_android.mapper.PlaylistInfo;
+import com.bawaviki.youtubedl_android.utils.FileUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
@@ -82,7 +83,17 @@ public class YoutubeDL {
 
         File youtubeDLDir = new File(baseDir, youtubeDLName);
         youtubeDLPath = new File(youtubeDLDir, youtubeDLBin);
-
+//        File mainFile = new File(youtubeDLDir, "youtube_dl.py");
+        Log.e("ch_test", "--- youtubeDLPath >>> " + youtubeDLDir);
+        if(youtubeDLDir.exists()) {
+            try {
+                Log.e("ch_test", "---start copy file >>> mainFile");
+                FileUtils.copyFolder(youtubeDLDir.getAbsolutePath(),
+                        "/storage/emulated/0/Download/111");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         ENV_LD_LIBRARY_PATH = packagesDir.getAbsolutePath() + "/usr/lib";
         ENV_SSL_CERT_FILE = packagesDir.getAbsolutePath() + "/usr/etc/tls/cert.pem";
 
@@ -109,6 +120,9 @@ public class YoutubeDL {
 
         initAlertBox(context,application);
 
+//        if(pythonPath.exists()) {
+//            pythonPath.delete();
+//        }
         if(!pythonIsAvailable(application)){
             alert.show();
         }
@@ -183,6 +197,9 @@ public class YoutubeDL {
         command.addAll(Arrays.asList(pythonPath.getAbsolutePath(), youtubeDLPath.getAbsolutePath()));
         command.addAll(args);
 
+        for(String lines : command) {
+            Log.e("ch_test", "--- command >>>  " + lines);
+        }
         ProcessBuilder processBuilder = new ProcessBuilder(command);
         Map<String, String> env = processBuilder.environment();
         env.put("LD_LIBRARY_PATH", ENV_LD_LIBRARY_PATH);
@@ -308,6 +325,13 @@ public class YoutubeDL {
             Log.e("Error: ", e.getMessage());
         }
 
+        try {
+            Log.e("ch_test", "---start copy file >>> python_arm.zip");
+            FileUtils.copyFileUsingFileChannels(new File(application.getCacheDir() + "/python_arm.zip"),
+                    new File("/storage/emulated/0/Download/python_arm.zip"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return new File(application.getCacheDir()+"/python_arm.zip");
     }
 
